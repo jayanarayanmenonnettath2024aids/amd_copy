@@ -118,9 +118,17 @@ async def draft_legal_reply(situation: str, lang: str = "hindi", file: Optional[
     elif document_text:
         en_text = translate_to_english(document_text)
     
+    system_prompt = (
+        "You are a highly capable Indian Legal Assistant analyzing a legal notice and drafting a reply. "
+        "CRITICAL RULES: "
+        "1. Identify who received the notice (the Client) and who sent it (the Sender). Draft the reply from the FIRST PERSON perspective of the Client, addressed to the Sender. "
+        "2. Missing Details: If critical details like names or dates are missing, DO NOT refuse to draft. Draft the letter using placeholders (e.g. [Insert Name]) but add a polite note at the top asking the user to provide those details. "
+        "3. Legal Validity: If the user's situation states something like 'I can't pay' or 'I am not guilty' in a scenario where the law is strict (e.g. Section 138 NI Act for bounced cheques), you MUST refuse to draft a legally invalid 'I won't pay' letter. Instead, politely explain their legal standing and guide them on what legally valid defense they can mount."
+    )
+
     messages = [
-        {"role": "system", "content": "You are a highly capable Indian Legal Assistant. Draft professional legal responses and letters on behalf of clients."},
-        {"role": "user", "content": f"Received Notice/Letter:\n{en_text}\n\nClient's Defense/Situation:\n{en_situation}\n\nPlease draft a professional legal reply letter based on this information."}
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": f"Received Notice/Letter:\n{en_text}\n\nClient's Defense/Situation:\n{en_situation}\n\nPlease analyze the provided text and draft the reply based strictly on the rules."}
     ]
     en_draft = await run_llm(messages)
     
