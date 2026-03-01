@@ -23,6 +23,7 @@ const Header = () => {
 
         <nav className="nav-menu">
           <Link to="/" className={isActive('/') ? 'active' : ''}>{translations.home}</Link>
+          <Link to="/workspace" className={isActive('/workspace') ? 'active' : ''}>{translations.workspace}</Link>
           <Link to="/analyze" className={isActive('/analyze') ? 'active' : ''}>{translations.analyze}</Link>
           <Link to="/ask" className={isActive('/ask') ? 'active' : ''}>{translations.ask}</Link>
           <Link to="/draft" className={isActive('/draft') ? 'active' : ''}>{translations.draft}</Link>

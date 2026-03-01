@@ -13,3 +13,7 @@ sqlite3-binary
 indic-transliteration
 transformers
 torch
+requests
+python-multipart
+python-dotenv
+deep-translator

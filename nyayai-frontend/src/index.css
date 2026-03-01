@@ -428,6 +428,8 @@ body::before {
   line-height: 1.6;
   margin-bottom: 3.5rem;
   max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .hero-btns {
@@ -490,7 +492,7 @@ body::before {
 
 /* Tools/Capabilities Section */
 .tools-section {
-  padding: 8rem 0;
+  padding: 4rem 0 8rem;
   max-width: 1250px;
   margin: 0 auto;
 }
@@ -611,7 +613,7 @@ body::before {
 .analyzer-container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 2rem 2rem 4rem;
   text-align: center;
 }
 

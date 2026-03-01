@@ -29,11 +29,11 @@ async def validate_upload_file(file: UploadFile):
         app_logger.warning(f"Rejected file with invalid extension: {ext}")
         raise HTTPException(status_code=400, detail="Unsupported file extension")
     
-    # Check file size by seeking to the end
-    await file.seek(0, os.SEEK_END)
+    # Check file size by seeking to the end using the underlying file object
+    file.file.seek(0, os.SEEK_END)
     file_size = file.file.tell()
     # Reset file pointer back to the beginning
-    await file.seek(0)
+    file.file.seek(0)
     
     if file_size > MAX_UPLOAD_SIZE_BYTES:
         app_logger.warning(f"File size exceeded: {file_size} bytes")

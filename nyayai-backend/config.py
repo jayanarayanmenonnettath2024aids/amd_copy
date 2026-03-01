@@ -1,5 +1,9 @@
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv(override=True)
 
 # Base Directory Paths
 BASE_DIR = Path(__file__).resolve().parent
@@ -22,6 +26,19 @@ ALLOWED_EXTENSIONS = {".pdf", ".jpg", ".jpeg", ".png"}
 
 # Model Settings
 GGUF_MODEL_PATH = MODELS_DIR / "nyayai_legal.gguf"
+
+# Prototype Loophole Settings
+# If true, uses a local standard Instruct model for prototype evaluation instead of the dummy nyayai_legal.gguf
+USE_PROTOTYPE_LOOPHOLE = os.getenv("USE_PROTOTYPE_LOOPHOLE", "True") == "True"
+PROTOTYPE_MODEL_PATH = MODELS_DIR / "prototype_model.gguf"
+
+# OpenRouter External Inference Fallback
+USE_OPENROUTER = os.getenv("USE_OPENROUTER", "False") == "True"
+# Read individual keys for easier configuration management
+key1 = os.getenv("OPENROUTER_API_KEY_1", "").strip()
+key2 = os.getenv("OPENROUTER_API_KEY_2", "").strip()
+OPENROUTER_API_KEYS = [k for k in (key1, key2) if k]
+OPENROUTER_MODEL = os.getenv("OPENROUTER_MODEL", "meta-llama/llama-3.3-70b-instruct:free")
 
 # Database Configuration
 DATABASE_URL = str(BASE_DIR / "nyayai.db")

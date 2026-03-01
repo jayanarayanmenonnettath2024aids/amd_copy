@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import DocumentAnalyzer from './components/DocumentAnalyzer';
 import LegalChat from './components/LegalChat';
 import DraftingTool from './components/DraftingTool';
+import NyayWorkspace from './components/NyayWorkspace';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
@@ -35,6 +36,7 @@ function App() {
                 <Route path="/analyze" element={<ProtectedRoute><DocumentAnalyzer /></ProtectedRoute>} />
                 <Route path="/ask" element={<ProtectedRoute><LegalChat /></ProtectedRoute>} />
                 <Route path="/draft" element={<ProtectedRoute><DraftingTool /></ProtectedRoute>} />
+                <Route path="/workspace" element={<ProtectedRoute><NyayWorkspace /></ProtectedRoute>} />
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/login" element={<LoginPage />} />

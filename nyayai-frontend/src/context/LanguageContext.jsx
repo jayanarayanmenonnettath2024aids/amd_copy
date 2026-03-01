@@ -97,12 +97,19 @@ export const LanguageProvider = ({ children }) => {
       // Analyzer Dashboard
       confidence: 'आत्मविश्वास',
       brainSummary: 'ब्रेन सारांश',
+      nextSteps: 'अगला कदम (Next Steps)',
       detectedStatutes: 'संसूचित कानून',
       docType: 'दस्तावेज़ प्रकार',
       readyForProcessing: 'प्रसंस्करण के लिए तैयार',
       startAnalysis: 'न्यूरल विश्लेषण शुरू करें',
-      browseFiles: 'या स्थानीय फ़ाइलें ब्राउज़ करने के लिए क्लिक करें (PNG, JPG, WEBP)',
-      analyzerHeroDesc: 'तत्काल न्यूरल प्रोसेसिंग और जोखिम पहचान के लिए किसी भी कानूनी दस्तावेज़ की छवि अपलोड करें।',
+      browseFiles: 'या स्थानीय फ़ाइलें ब्राउज़ करने के लिए क्लिक करें (PDF, PNG, JPG, WEBP)',
+      analyzerHeroDesc: 'तत्काल न्यूरल प्रोसेसिंग और जोखिम पहचान के लिए कोई भी कानूनी दस्तावेज़ या उसकी छवि अपलोड करें।',
+      // Workspace
+      workspace: 'कार्यक्षेत्र',
+      workspaceTitle: 'एकीकृत कार्यक्षेत्र',
+      workspaceSubtitle: 'अपने कानूनी दस्तावेज़ को अपलोड करें और न्यूरल विश्लेषण, प्रासंगिक प्रश्नोत्तर, और स्वचालित ड्राफ्टिंग को एक ही स्थान पर अनलॉक करें।',
+      workspaceChatSubtitle: 'उपरोक्त दस्तावेज़ के संबंध में कोई भी विशिष्ट प्रश्न पूछें। AI के पास यह संदर्भ में है।',
+      workspaceDraftSubtitle: 'अपलोड किए गए दस्तावेज़ के आधार पर तुरंत एक औपचारिक उत्तर का मसौदा तैयार करने के लिए अपनी स्थिति का वर्णन करें।',
       // Common
       upload: 'अपलोड करें',
       selectFile: 'फ़ाइल चुनें',
@@ -200,12 +207,19 @@ export const LanguageProvider = ({ children }) => {
       // Analyzer Dashboard
       confidence: 'Confidence',
       brainSummary: 'Brain Summary',
+      nextSteps: 'Next Steps',
       detectedStatutes: 'Detected Statutes',
       docType: 'Document Type',
       readyForProcessing: 'READY FOR PROCESSING',
       startAnalysis: 'Start Neural Analysis',
-      browseFiles: 'or click to browse local files (PNG, JPG, WEBP)',
-      analyzerHeroDesc: 'Upload any legal document image for instant neural processing and risk identification.',
+      browseFiles: 'or click to browse local files (PDF, PNG, JPG, WEBP)',
+      analyzerHeroDesc: 'Upload any legal document or image for instant neural processing and risk identification.',
+      // Workspace
+      workspace: 'Workspace',
+      workspaceTitle: 'Unified Workspace',
+      workspaceSubtitle: 'Upload your legal document to instantly unlock Neural Analysis, Contextual Q&A, and Automated Drafting in one place.',
+      workspaceChatSubtitle: 'Ask any specific questions regarding the document above. The AI has it in context.',
+      workspaceDraftSubtitle: 'Describe your situation to instantly draft a formal reply based on the uploaded document.',
       // Common
       upload: 'Upload',
       selectFile: 'Select File',

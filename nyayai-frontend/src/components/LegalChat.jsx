@@ -5,19 +5,23 @@ import { askQuestion } from '../services/api';
 const LegalChat = () => {
     const { language, translations } = useLanguage();
     const [question, setQuestion] = useState('');
+    const [file, setFile] = useState(null);
+    const fileInputRef = React.useRef(null);
     const [chat, setChat] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const handleSend = async () => {
         if (!question.trim()) return;
 
-        const userMsg = { role: 'user', text: question };
+        const userMsg = { role: 'user', text: question, file: file };
         setChat(prev => [...prev, userMsg]);
+        const currentFile = file;
         setQuestion('');
+        setFile(null);
         setLoading(true);
 
         try {
-            const data = await askQuestion(question, language);
+            const data = await askQuestion(question, language, currentFile);
             setChat(prev => [...prev, { role: 'ai', text: data.answer }]);
         } catch (error) {
             console.error(error);
@@ -47,6 +51,11 @@ const LegalChat = () => {
                                     {msg.role === 'ai' ? translations.aiRole : translations.userRole}
                                 </span>
                                 <div className="message-text">
+                                    {msg.file && (
+                                        <div style={{ padding: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '8px', marginBottom: '8px', fontSize: '0.85em' }}>
+                                            📎 {msg.file.name}
+                                        </div>
+                                    )}
                                     {msg.text}
                                 </div>
                             </div>
@@ -67,7 +76,28 @@ const LegalChat = () => {
                     )}
                 </div>
 
-                <div className="chat-input-area">
+                <div className="chat-input-area" style={{ position: 'relative' }}>
+                    {file && (
+                        <div style={{ position: 'absolute', top: '-30px', left: '10px', background: '#333', padding: '4px 10px', borderRadius: '12px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            <span style={{ color: '#fff' }}>📄 {file.name}</span>
+                            <button onClick={() => setFile(null)} style={{ background: 'none', border: 'none', color: '#ff4444', cursor: 'pointer' }}>×</button>
+                        </div>
+                    )}
+                    <input
+                        type="file"
+                        hidden
+                        ref={fileInputRef}
+                        onChange={(e) => setFile(e.target.files[0])}
+                        accept="image/*,.pdf"
+                    />
+                    <button
+                        className="attach-btn"
+                        onClick={() => fileInputRef.current.click()}
+                        style={{ background: 'none', border: 'none', color: '#a0aec0', cursor: 'pointer', padding: '0 10px' }}
+                        title="Attach Document"
+                    >
+                        📎
+                    </button>
                     <input
                         type="text"
                         value={question}

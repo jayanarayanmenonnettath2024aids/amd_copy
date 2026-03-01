@@ -4,15 +4,16 @@ import { draftResponse } from '../services/api';
 
 const DraftingTool = () => {
     const { language, translations } = useLanguage();
-    const [docText, setDocText] = useState('');
+    const [file, setFile] = useState(null);
     const [situation, setSituation] = useState('');
     const [draft, setDraft] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleDraft = async () => {
+        if (!situation) return;
         setLoading(true);
         try {
-            const data = await draftResponse(docText, situation, language);
+            const data = await draftResponse(null, situation, language, file);
             setDraft(data.draft);
         } catch (error) {
             console.error(error);
@@ -32,12 +33,18 @@ const DraftingTool = () => {
                 <div className="composer-section">
                     <div className="composer-field">
                         <label>{translations.docExcerptLabel}</label>
-                        <textarea
-                            className="composer-textarea"
-                            value={docText}
-                            onChange={(e) => setDocText(e.target.value)}
-                            placeholder="Paste the source legal text here..."
-                        />
+                        <div className="upload-box-small" style={{ border: '2px dashed rgba(255,255,255,0.2)', padding: '15px', borderRadius: '10px', textAlign: 'center', cursor: 'pointer', background: 'rgba(255,255,255,0.05)' }}>
+                            <input
+                                type="file"
+                                id="draft-file"
+                                hidden
+                                accept="image/*,.pdf"
+                                onChange={(e) => setFile(e.target.files[0])}
+                            />
+                            <label htmlFor="draft-file" style={{ cursor: 'pointer', display: 'block', margin: 0 }}>
+                                {file ? file.name : "Click to upload notice/document (PDF/Image)"}
+                            </label>
+                        </div>
                     </div>
 
                     <div className="composer-field">

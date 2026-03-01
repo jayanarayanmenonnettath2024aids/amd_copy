@@ -3,7 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { analyzeDocument } from '../services/api';
 
 const DocumentAnalyzer = () => {
-    const { translations } = useLanguage();
+    const { translations, language } = useLanguage();
     const [file, setFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
     const [result, setResult] = useState(null);
@@ -11,13 +11,27 @@ const DocumentAnalyzer = () => {
     const [isDragging, setIsDragging] = useState(false);
     const fileInputRef = useRef(null);
 
+    const formatText = (text) => {
+        if (!text) return null;
+        return text.split('\n').map((line, i) => (
+            <React.Fragment key={i}>
+                <span dangerouslySetInnerHTML={{ __html: line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
+                <br />
+            </React.Fragment>
+        ));
+    };
+
     const handleFileChange = (selectedFile) => {
-        if (selectedFile && selectedFile.type.startsWith('image/')) {
+        if (selectedFile && (selectedFile.type.startsWith('image/') || selectedFile.type === 'application/pdf')) {
             setFile(selectedFile);
-            setPreviewUrl(URL.createObjectURL(selectedFile));
+            if (selectedFile.type.startsWith('image/')) {
+                setPreviewUrl(URL.createObjectURL(selectedFile));
+            } else {
+                setPreviewUrl(URL.createObjectURL(selectedFile)); // Use for embed/iframe if needed, or simply signal preview is ready
+            }
             setResult(null);
         } else if (selectedFile) {
-            alert('Please upload an image file for analysis.');
+            alert('Please upload an image or PDF file for analysis.');
         }
     };
 
@@ -41,7 +55,7 @@ const DocumentAnalyzer = () => {
         if (!file) return;
         setLoading(true);
         try {
-            const data = await analyzeDocument(file);
+            const data = await analyzeDocument(file, language);
             setResult(data);
         } catch (error) {
             console.error(error);
@@ -73,7 +87,7 @@ const DocumentAnalyzer = () => {
                     hidden
                     ref={fileInputRef}
                     onChange={(e) => handleFileChange(e.target.files[0])}
-                    accept="image/*"
+                    accept="image/*,.pdf"
                 />
                 <span className="upload-icon-large">📄</span>
                 <h3>
@@ -84,7 +98,11 @@ const DocumentAnalyzer = () => {
 
             {previewUrl && (
                 <div className="big-bold-preview">
-                    <img src={previewUrl} alt="Document Preview" />
+                    {file && file.type === 'application/pdf' ? (
+                        <iframe src={previewUrl} title="PDF Preview" style={{ width: '100%', height: '400px', borderRadius: '16px', border: 'none' }} />
+                    ) : (
+                        <img src={previewUrl} alt="Document Preview" />
+                    )}
                     <div className="preview-overlay">
                         <div className="preview-info">
                             <div className="badge-premium">{translations.readyForProcessing}</div>
@@ -128,8 +146,18 @@ const DocumentAnalyzer = () => {
                     <div className="explanation-main">
                         <h3 className="gradient-text">{translations.brainSummary}</h3>
                         <p className="text-muted" style={{ fontSize: '1.2rem', lineHeight: 1.8 }}>
-                            {result.explanation}
+                            {formatText(result.explanation)}
                         </p>
+
+                        {result.next_steps && (
+                            <div style={{ marginTop: '2.5rem' }}>
+                                <h3 className="gradient-text">{translations.nextSteps}</h3>
+                                <p className="text-muted" style={{ fontSize: '1.1rem', lineHeight: 1.8 }}>
+                                    {formatText(result.next_steps)}
+                                </p>
+                            </div>
+                        )}
+
                         <div style={{ marginTop: '3rem', padding: '2rem', background: 'rgba(99, 102, 241, 0.05)', borderRadius: '16px' }}>
                             <h4 style={{ color: 'white', marginBottom: '1rem' }}>{translations.intelNoteTitle}</h4>
                             <p className="text-muted" style={{ fontSize: '0.95rem' }}>

@@ -1,21 +1,27 @@
 from utils.logger import app_logger
-
-# Placeholder for IndicTrans2 Model loading
-# This represents the interface wrapper to standard offline sequence-to-sequence translation in IndicTrans2
+from deep_translator import GoogleTranslator
 
 def translate_to_english(text: str) -> str:
     """Translates native text to English."""
     if not text:
         return ""
-    app_logger.info("Translating text to English using IndicTrans2")
-    # For now, this is a direct passthrough/mock to ensure system boot
-    # Actual invocation requires: model.generate(**tokenizer(text))
-    return f"[Translated to English]: {text}"
+    try:
+        app_logger.info("Translating text to English...")
+        # Chunk text if necessary, deep_translator handles up to 5k chars natively usually
+        return GoogleTranslator(source='auto', target='en').translate(text)
+    except Exception as e:
+        app_logger.error(f"Translation to English failed: {e}")
+        return text
 
 def translate_to_native(text: str, lang: str) -> str:
     """Translates English text to a native language."""
-    if not text:
-        return ""
-    app_logger.info(f"Translating text to {lang} using IndicTrans2")
-    # Actual invocation requires generating tokens with lang condition
-    return f"[{lang} translation]: {text}"
+    if not text or lang.lower() == "english":
+        return text
+        
+    target_lang = "hi" if lang.lower() == "hindi" else lang.lower()
+    try:
+        app_logger.info(f"Translating text to {target_lang}...")
+        return GoogleTranslator(source='en', target=target_lang).translate(text)
+    except Exception as e:
+        app_logger.error(f"Translation to native failed: {e}")
+        return text
