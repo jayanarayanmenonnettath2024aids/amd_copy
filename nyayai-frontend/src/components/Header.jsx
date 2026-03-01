@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
 import { useAuth } from '../context/AuthContext';
+import ToggleTheme from './ToggleTheme';
 
 const Header = () => {
   const { toggleLanguage, translations } = useLanguage();
@@ -30,6 +31,7 @@ const Header = () => {
         </nav>
 
         <div className="header-meta">
+          <ToggleTheme />
           <button className="lang-btn" onClick={toggleLanguage} title="Switch Language">
             {translations.toggle}
           </button>

@@ -261,26 +261,12 @@ export const ThreeDImageCarousel = ({
                     <>
                         <span
                             className="cascade-slider_arrow cascade-slider_arrow-left"
-                            style={{
-                                background: 'rgba(0,0,0,0.3)',
-                                borderRadius: '50%',
-                                color: 'white',
-                                padding: '8px',
-                                left: '-40px'
-                            }}
                             onClick={(e) => { e.stopPropagation(); navigate('prev'); }}
                         >
                             <ArrowLeftCircle size={32} />
                         </span>
                         <span
                             className="cascade-slider_arrow cascade-slider_arrow-right"
-                            style={{
-                                background: 'rgba(0,0,0,0.3)',
-                                borderRadius: '50%',
-                                color: 'white',
-                                padding: '8px',
-                                right: '-40px'
-                            }}
                             onClick={(e) => { e.stopPropagation(); navigate('next'); }}
                         >
                             <ArrowRightCircle size={32} />

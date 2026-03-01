@@ -35,7 +35,7 @@ const LandingPage = () => {
       </section>
 
       {/* 3D Carousel Section */}
-      <section className="carousel-section animate-fade-in" style={{ padding: '4rem 0', overflow: 'hidden' }}>
+      <section className="carousel-section animate-fade-in" style={{ padding: '4rem 0' }}>
         <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '4rem' }}>
           {translations.carouselTitle.split(' ')[0]} <span className="gradient-text">{translations.carouselTitle.split(' ').slice(1).join(' ')}</span>
         </h2>

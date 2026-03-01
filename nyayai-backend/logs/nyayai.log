@@ -150,3 +150,5 @@
 2026-03-01 15:43:54,821 - nyayai - INFO - Running LLM Chat Inference...
 2026-03-01 17:22:39,506 - nyayai - INFO - Database initialized successfully.
 2026-03-01 17:22:39,639 - nyayai - INFO - NyayAI Backend Started Successfully in Offline Mode.
+2026-03-01 20:49:46,848 - nyayai - INFO - Database initialized successfully.
+2026-03-01 20:49:46,883 - nyayai - INFO - NyayAI Backend Started Successfully in Offline Mode.

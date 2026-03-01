@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { analyzeDocument } from '../services/api';
+import LoadingSpinner from './ui/LoadingSpinner';
+import { cn } from '../lib/utils';
 
 const DocumentAnalyzer = () => {
     const { translations, language } = useLanguage();
@@ -110,10 +112,17 @@ const DocumentAnalyzer = () => {
                         </div>
                         <button
                             onClick={(e) => { e.stopPropagation(); handleUpload(); }}
-                            className="btn-primary analyze-btn"
+                            className={cn("btn-primary analyze-btn", loading && "btn-loading")}
                             disabled={loading}
                         >
-                            {loading ? translations.signingIn : translations.startAnalysis}
+                            {loading ? (
+                                <>
+                                    <LoadingSpinner size={20} color="white" />
+                                    <span>{translations.processingText || "Analyzing..."}</span>
+                                </>
+                            ) : (
+                                translations.startAnalysis
+                            )}
                         </button>
                     </div>
                 </div>

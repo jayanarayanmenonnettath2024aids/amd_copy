@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
+import { cn } from '../lib/utils';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -10,18 +12,27 @@ const RegisterPage = () => {
     password: '',
     confirmPassword: ''
   });
+  const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const { translations } = useLanguage();
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords don't match!");
       return;
     }
-    register({ name: formData.name, email: formData.email });
-    navigate('/');
+    setLoading(true);
+    try {
+      await register({ name: formData.name, email: formData.email, password: formData.password });
+      navigate('/');
+    } catch (error) {
+      console.error("Registration failed:", error);
+      alert(error.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -77,7 +88,18 @@ const RegisterPage = () => {
               required
             />
           </div>
-          <button type="submit" className="btn-primary auth-btn">{translations.register}</button>
+          <button
+            type="submit"
+            className={cn("btn-primary auth-btn", loading && "btn-loading")}
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <LoadingSpinner size={20} color="white" />
+                <span>Creating Account...</span>
+              </>
+            ) : translations.register}
+          </button>
         </form>
 
         <div className="auth-divider">

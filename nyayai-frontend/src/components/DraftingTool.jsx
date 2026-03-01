@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { draftResponse } from '../services/api';
+import LoadingSpinner from './ui/LoadingSpinner';
+import { cn } from '../lib/utils';
 
 const DraftingTool = () => {
     const { language, translations } = useLanguage();
@@ -33,7 +35,7 @@ const DraftingTool = () => {
                 <div className="composer-section">
                     <div className="composer-field">
                         <label>{translations.docExcerptLabel}</label>
-                        <div className="upload-box-small" style={{ border: '2px dashed rgba(255,255,255,0.2)', padding: '15px', borderRadius: '10px', textAlign: 'center', cursor: 'pointer', background: 'rgba(255,255,255,0.05)' }}>
+                        <div className="upload-box-small">
                             <input
                                 type="file"
                                 id="draft-file"
@@ -42,7 +44,7 @@ const DraftingTool = () => {
                                 onChange={(e) => setFile(e.target.files[0])}
                             />
                             <label htmlFor="draft-file" style={{ cursor: 'pointer', display: 'block', margin: 0 }}>
-                                {file ? file.name : "Click to upload notice/document (PDF/Image)"}
+                                {file ? file.name : translations.clickToUpload || "Click to upload notice/document (PDF/Image)"}
                             </label>
                         </div>
                     </div>
@@ -59,15 +61,14 @@ const DraftingTool = () => {
 
                     <button
                         onClick={handleDraft}
-                        className="btn-primary w-full"
+                        className={cn("btn-primary w-full", loading && "btn-loading")}
                         disabled={loading}
                     >
                         {loading ? (
-                            <div className="typing-indicator">
-                                <span className="typing-dot"></span>
-                                <span className="typing-dot"></span>
-                                <span className="typing-dot"></span>
-                            </div>
+                            <>
+                                <LoadingSpinner size={20} color="white" />
+                                <span>{translations.generating || "Drafting..."}</span>
+                            </>
                         ) : (
                             translations.generate
                         )}

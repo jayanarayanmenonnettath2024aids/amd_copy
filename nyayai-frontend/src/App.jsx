@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // Context
 import { LanguageProvider } from './context/LanguageContext';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 // Components
 import Header from './components/Header';
@@ -24,33 +25,35 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 
 function App() {
   return (
-    <LanguageProvider>
-      <AuthProvider>
-        <Router>
-          <div className="app-container">
-            <Header />
+    <ThemeProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <Router>
+            <div className="app-container">
+              <Header />
 
-            <main className="app-content">
-              <Routes>
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/analyze" element={<ProtectedRoute><DocumentAnalyzer /></ProtectedRoute>} />
-                <Route path="/ask" element={<ProtectedRoute><LegalChat /></ProtectedRoute>} />
-                <Route path="/draft" element={<ProtectedRoute><DraftingTool /></ProtectedRoute>} />
-                <Route path="/workspace" element={<ProtectedRoute><NyayWorkspace /></ProtectedRoute>} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              </Routes>
-            </main>
+              <main className="app-content">
+                <Routes>
+                  <Route path="/" element={<LandingPage />} />
+                  <Route path="/analyze" element={<ProtectedRoute><DocumentAnalyzer /></ProtectedRoute>} />
+                  <Route path="/ask" element={<ProtectedRoute><LegalChat /></ProtectedRoute>} />
+                  <Route path="/draft" element={<ProtectedRoute><DraftingTool /></ProtectedRoute>} />
+                  <Route path="/workspace" element={<ProtectedRoute><NyayWorkspace /></ProtectedRoute>} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/contact" element={<ContactPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                </Routes>
+              </main>
 
-            <Footer />
+              <Footer />
 
-          </div>
-        </Router>
-      </AuthProvider>
-    </LanguageProvider>
+            </div>
+          </Router>
+        </AuthProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }
 

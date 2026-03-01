@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
+import { cn } from '../lib/utils';
 
 const ForgotPasswordPage = () => {
     const [email, setEmail] = useState('');
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
     const { translations } = useLanguage();
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setLoading(true);
         // Simulate API call
-        console.log('Reset link requested for:', email);
-        setIsSubmitted(true);
+        setTimeout(() => {
+            console.log('Reset link requested for:', email);
+            setIsSubmitted(true);
+            setLoading(false);
+        }, 1500); // Simulate network delay
     };
 
     return (
@@ -39,8 +46,18 @@ const ForgotPasswordPage = () => {
                             />
                         </div>
 
-                        <button type="submit" className="btn-primary auth-btn" style={{ marginTop: '1rem' }}>
-                            {translations.resetPasswordBtn}
+                        <button
+                            type="submit"
+                            className={cn("btn-primary auth-btn", loading && "btn-loading")}
+                            style={{ marginTop: '1rem' }}
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <>
+                                    <LoadingSpinner size={20} color="white" />
+                                    <span>Sending Link...</span>
+                                </>
+                            ) : translations.resetPasswordBtn}
                         </button>
                     </form>
                 ) : (

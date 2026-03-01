@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
+import { cn } from '../lib/utils';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false); // Add loading state
   const { login } = useAuth();
   const { translations } = useLanguage();
   const navigate = useNavigate();
@@ -13,10 +16,18 @@ const LoginPage = () => {
 
   const from = location.state?.from?.pathname || "/";
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => { // Make function async
     e.preventDefault();
-    login({ name: email.split('@')[0], email });
-    navigate(from, { replace: true });
+    setLoading(true); // Set loading to true
+    try {
+      await login({ name: email.split('@')[0], email }); // Await login
+      navigate(from, { replace: true });
+    } catch (error) {
+      console.error("Login failed:", error);
+      // Optionally, display an error message to the user
+    } finally {
+      setLoading(false); // Set loading to false regardless of success or failure
+    }
   };
 
   return (
@@ -56,8 +67,17 @@ const LoginPage = () => {
             </label>
             <Link to="/forgot-password" title={translations.forgotPasswordTitle}>{translations.forgotPasswordTitle}</Link>
           </div>
-          <button type="submit" className="btn-primary auth-btn">
-            {translations.signIn}
+          <button
+            type="submit"
+            className={cn("btn-primary auth-btn", loading && "btn-loading")}
+            disabled={loading}
+          >
+            {loading ? (
+              <>
+                <LoadingSpinner size={20} color="white" />
+                <span>Logging in...</span>
+              </>
+            ) : translations.signIn}
           </button>
         </form>
 
